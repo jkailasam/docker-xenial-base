@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 MAINTAINER Jeeva Kailasam
 
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v1.21.2.2"
+ARG OVERLAY_VERSION="v1.21.7.0"
 ARG OVERLAY_ARCH="amd64"
 
 # set environment variables
