@@ -8,7 +8,7 @@ ARG OVERLAY_ARCH="amd64"
 # set environment variables
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/root" \
-TERM="xterm" 
+	TERM="xterm" 
 
 
 # copy sources
@@ -16,39 +16,36 @@ COPY sources.list /etc/apt/
 
 # install apt-utils and locales
 RUN \
- apt-get update && \
- apt-get install -y \
+	apt-get update && \
+	apt-get install -y --no-install-recommends \
 	apt-utils \
-	locales && \
-
-# install packages
- apt-get install -y \
+	locales \
 	curl \
 	tzdata && \
 
-# generate locale
- locale-gen en_US.UTF-8 && \
+	# generate locale
+	locale-gen en_US.UTF-8 && \
 
-# add s6 overlay
- curl -o \
- /tmp/s6-overlay.tar.gz -L \
+	# add s6 overlay
+	curl -o \
+	/tmp/s6-overlay.tar.gz -L \
 	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}.tar.gz" && \
- tar xfz \
+	tar xfz \
 	/tmp/s6-overlay.tar.gz -C / && \
 
-# create abc user
- useradd -u 911 -U -d /config -s /bin/false abc && \
- usermod -G users abc && \
+	# create abc user
+	useradd -u 911 -U -d /config -s /bin/false abc && \
+	usermod -G users abc && \
 
-# make our folders
- mkdir -p \
+	# make our folders
+	mkdir -p \
 	/app \
 	/config \
 	/defaults && \
 
-# cleanup
- apt-get clean && \
- rm -rf \
+	# cleanup
+	apt-get clean && \
+	rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/*
